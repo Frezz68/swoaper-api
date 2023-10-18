@@ -4,17 +4,17 @@ const app = express();
 const port = process.env.PORT || 3000;
 const db = mongoose.connection;
 
-// Connexion à la base de données via un fichier de configuration
+// Connexion à la base de données
 require('./config/database');
 
-// Importez le routeur de userController
+// User routes
 const userRouter = require('./routes/userRoutes');
-
-// Middleware pour gérer les données JSON
 app.use(express.json());
+app.use('/', userRouter);
 
-// Montez le routeur sur votre application
-app.use('/', userRouter); // Cela signifie que toutes les routes définies dans userController commenceront par '/'
+// Swagger config
+const configureSwagger = require('./swagger/config');
+configureSwagger(app);
 
 app.listen(port, () => {
   console.log(`Serveur en cours d'exécution sur le port ${port}`);
