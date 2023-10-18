@@ -1,14 +1,16 @@
-require('dotenv').config(); // Charge les variables d'environnement à partir de .env
+const dotenv = require('dotenv');
+dotenv.config();
 
+// Vous pouvez maintenant accéder à MONGODB_URI
+const mongodbUri = process.env.MONGODB_URI;
+
+// Utilisez mongodbUri dans votre configuration MongoDB
 const mongoose = require('mongoose');
 
-// Utilisez process.env pour accéder à vos variables d'environnement
-const dbURI = process.env.MONGODB_URI;
-
-// Connectez-vous à votre base de données MongoDB
-mongoose.connect(dbURI, {
+mongoose.connect(mongodbUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
+// Exportez la connexion ou toute autre configuration si nécessaire
 module.exports = mongoose.connection;
