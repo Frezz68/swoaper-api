@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const isEmailUnique = async (email) => {
   const existingUser = await User.findOne({ email });
@@ -27,6 +29,35 @@ exports.createUser = async (req, res) => {
       return res.status(400).json({ error: err.message });
     }
     res.status(500).json({ error: 'Erreur lors de la création de l\'utilisateur' });
+  }
+};
+
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Recherchez l'utilisateur dans la base de données par email
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Identifiants incorrects' });
+    }
+
+    if (!user.password === password) {
+      return res.status(401).json({ message: 'Identifiants incorrects' });
+    }
+
+    // Générez un jeton JWT avec l'ID de l'utilisateur
+    const token = jwt.sign(
+      { id: user._id, roles: user.roles },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+    // Renvoyez le jeton JWT en réponse
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de la connexion' });
   }
 };
 

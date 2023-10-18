@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
 
 /**
  * @swagger
@@ -22,6 +23,8 @@ const userController = require('../controllers/userController');
  */
 router.post('/users', userController.createUser);
 
+router.post('/login', userController.login);
+
 /**
  * @swagger
  * /users:
@@ -36,7 +39,7 @@ router.post('/users', userController.createUser);
  *     tags:
  *         - User
  */
-router.get('/users', userController.getAllUsers);
+router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
 
 /**
  * @swagger
