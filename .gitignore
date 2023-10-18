@@ -1,0 +1,43 @@
+# Dossiers et fichiers générés par Node.js
+node_modules/
+npm-debug.log
+
+# Fichiers de configuration
+.env
+.env.local
+.env.*.local
+
+# Fichiers de logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de swap
+.pnpm-store
+.pnpm-workspace.yaml
+.pnp.local
+
+# Dossiers de cache
+pnpify/
+.pnp.js
+.pnp.cjs
+.pnp.cjs.br
+.pnp.cjs.gz
+.pnp.js.br
+.pnp.js.gz
+
+# Fichiers de build ou fichiers compilés (si applicables)
+dist/
+out/
+build/
+*.tsbuildinfo
+
+# Fichiers d'éditeurs spécifiques
+.vscode/
+.idea/
+
+# Fichiers de dépendances
+package-lock.json
+yarn.lock
