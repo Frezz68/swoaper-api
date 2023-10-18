@@ -16,6 +16,10 @@ app.use('/', userRouter);
 const configureSwagger = require('./swagger/config');
 configureSwagger(app);
 
+// Passport config
+const passport = require('./config/passeport');
+app.use(passport.initialize());
+
 app.listen(port, () => {
   console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });
