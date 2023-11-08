@@ -12,6 +12,11 @@ const userRouter = require('./routes/userRoutes');
 app.use(express.json());
 app.use('/', userRouter);
 
+// Cart routes
+const cartRouter = require('./routes/cartRoutes');
+app.use(express.json());
+app.use('/', cartRouter);
+
 // Swagger config
 const configureSwagger = require('./swagger/config');
 configureSwagger(app);

@@ -5,9 +5,17 @@ const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
 
 /**
  * @swagger
+ * tags:
+ *   name: User
+ *   description: Opérations relatives aux utilisateurs.
+ */
+
+/**
+ * @swagger
  * /users:
  *   post:
  *     summary: Créer un nouvel utilisateur.
+ *     tags: [User]
  *     description: Crée un nouvel utilisateur avec les données fournies.
  *     requestBody:
  *       required: true
@@ -18,8 +26,6 @@ const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
  *         description: Cette adresse e-mail existe déjà ou des données invalides ont été fournies.
  *       '500':
  *         description: Erreur du serveur.
- *     tags:
- *         - User
  */
 router.post('/users', userController.createUser);
 
@@ -30,14 +36,15 @@ router.post('/login', userController.login);
  * /users:
  *   get:
  *     summary: Récupère tous les utilisateurs.
+ *     tags: [User]
+ *     security:
+ *       - BearerAuth: []
  *     description: Récupère tous les utilisateurs de la base de données.
  *     responses:
  *       '200':
  *         description: Réponse réussie.
  *       '500':
  *         description: Erreur du serveur.
- *     tags:
- *         - User
  */
 router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
 
@@ -46,6 +53,7 @@ router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
  * /users/{userId}:
  *   get:
  *     summary: Récupère un utilisateur par son ID.
+ *     tags: [User]
  *     description: Récupère un utilisateur spécifique en utilisant son ID.
  *     parameters:
  *       - in: path
@@ -61,8 +69,6 @@ router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
  *         description: Utilisateur non trouvé.
  *       '500':
  *         description: Erreur du serveur.
- *     tags:
- *         - User
  */
 router.get('/users/:userId', userController.getUserById);
 
@@ -71,6 +77,7 @@ router.get('/users/:userId', userController.getUserById);
  * /users/{userId}:
  *   put:
  *     summary: Met à jour un utilisateur par son ID.
+ *     tags: [User]
  *     description: Met à jour un utilisateur spécifique en utilisant son ID.
  *     parameters:
  *       - in: path
@@ -88,8 +95,6 @@ router.get('/users/:userId', userController.getUserById);
  *         description: Utilisateur non trouvé.
  *       '500':
  *         description: Erreur du serveur.
- *     tags:
- *         - User
  */
 router.put('/users/:userId', userController.updateUser);
 
@@ -98,6 +103,7 @@ router.put('/users/:userId', userController.updateUser);
  * /users/{userId}:
  *   delete:
  *     summary: Supprime un utilisateur par son ID.
+ *     tags: [User]
  *     description: Supprime un utilisateur spécifique en utilisant son ID.
  *     parameters:
  *       - in: path
@@ -113,9 +119,7 @@ router.put('/users/:userId', userController.updateUser);
  *         description: Utilisateur non trouvé.
  *       '500':
  *         description: Erreur du serveur.
- *     tags:
- *         - User
  */
-router.delete('/users/:userId', userController.deleteUser);
+router.delete('/users/:userId', requireAuth, requireAdmin, userController.deleteUser);
 
 module.exports = router;

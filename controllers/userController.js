@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Cart = require('../models/cart');
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -20,7 +21,11 @@ exports.createUser = async (req, res) => {
     }
 
     const newUser = new User(req.body);
-    await newUser.save();
+    const user = await newUser.save();
+
+    const newCart = new Cart({ _id: user._id });
+    await newCart.save();
+
     res.status(201).json({ message: 'Utilisateur créé avec succès' });
   } catch (err) {
     // Gérez les erreurs spécifiques ici
@@ -100,6 +105,7 @@ exports.updateUser = async (req, res) => {
 // Supprimer un utilisateur par son ID
 exports.deleteUser = async (req, res) => {
   try {
+    await Cart.findByIdAndRemove(req.params.userId);
     const deletedUser = await User.findByIdAndRemove(req.params.userId);
     if (!deletedUser) {
       return res.status(404).json({ error: 'Utilisateur non trouvé' });
