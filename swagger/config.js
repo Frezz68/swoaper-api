@@ -10,12 +10,6 @@ const options = {
       version: '1.0.0',
       description: 'Documentation for your API endpoints',
     },
-    "tags": [
-        {
-        "name": "User",
-        "description": "Opérations relatives aux utilisateurs"
-        }
-    ],
   },
   apis: ['./routes/*.js'],
 };
