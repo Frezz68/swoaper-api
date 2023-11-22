@@ -12,7 +12,7 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware"); /
 
 /**
  * @swagger
- * /carts:
+ * /carts/user-cart:
  *   get:
  *     summary: Récupère le panier de l'utilisateur connecté.
  *     tags: [Cart]
@@ -34,7 +34,12 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware"); /
  *                   type: array
  *                 services:
  *                   type: array
- *   post:
+ */
+router.get("/carts/user-cart", requireAuth, cartController.getUserCart);
+
+/**
+ * @swagger
+ *   /carts/create:
  *     summary: Créé un panier pour un utilisateur.
  *     tags: [Cart]
  *     security:
@@ -50,54 +55,11 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware"); /
  *                 message:
  *                   type: string
  */
-
-router
-    .route("/carts")
-    .get(requireAuth, requireAuth, cartController.getUserCart)
-    .post(requireAuth, requireAuth, requireAdmin, cartController.createCart);
+router.post("/carts/create", requireAuth, cartController.getUserCart);
 
 /**
  * @swagger
- * /carts/{cartId}:
- *   put:
- *     summary: Modifie le panier de l'utilisateur connecté.
- *     tags: [Cart]
- *     security:
- *       - BearerAuth: []
- *     parameters:
- *       - in: path
- *         name: cartId
- *         required: true
- *         description: ID of the cart to update.
- *         schema:
- *           type: string
- *     requestBody:
- *       description: New cart data.
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               products:
- *                 type: array
- *               services:
- *                 type: array
- *     responses:
- *       200:
- *         description: Successfully updated the user's cart.
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- */
-
-/**
- * @swagger
- * /carts/{cartId}:
+ * /carts/delete/{cartId}:
  *   delete:
  *     summary: Supprime le panier de l'utilisateur connecté.
  *     tags: [Cart]
@@ -116,7 +78,7 @@ router
  */
 
 router
-    .route("/carts/:cartId")
+    .route("/carts/delete/:cartId")
     .put(requireAuth, cartController.updateCart)
     .delete(requireAuth, cartController.deleteCart);
 

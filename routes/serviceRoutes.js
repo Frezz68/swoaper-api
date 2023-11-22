@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const serviceController = require("./serviceController");
+const serviceController = require("../controllers/serviceController");
 const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 /**
@@ -19,14 +19,8 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
  *     responses:
  *       200:
  *         description: An array of services
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Service'
  */
-router.get("/", serviceController.listServices);
+router.get("/services", serviceController.listServices);
 
 /**
  * @swagger
@@ -51,11 +45,11 @@ router.get("/", serviceController.listServices);
  *       404:
  *         description: Service not found
  */
-router.get("/:id", serviceController.getServiceById);
+router.get("/services/:id", serviceController.getServiceById);
 
 /**
  * @swagger
- * /services:
+ * /services/create:
  *   post:
  *     summary: Create a new service
  *     tags: [Services]
@@ -65,15 +59,22 @@ router.get("/:id", serviceController.getServiceById);
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Service'
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       201:
  *         description: Service created
  */
-router.post("/", requireAuth, requireAdmin, serviceController.createService);
+router.post(
+    "/services/create",
+    requireAuth,
+    requireAdmin,
+    serviceController.createService
+);
 
 /**
  * @swagger
- * /services/{id}:
+ * /services/update/{id}:
  *   put:
  *     summary: Update a service
  *     tags: [Services]
@@ -84,6 +85,8 @@ router.post("/", requireAuth, requireAdmin, serviceController.createService);
  *           type: string
  *         required: true
  *         description: The service id
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -96,11 +99,16 @@ router.post("/", requireAuth, requireAdmin, serviceController.createService);
  *       404:
  *         description: Service not found
  */
-router.put("/:id", requireAuth, requireAdmin, serviceController.updateService);
+router.put(
+    "/services/update/:id",
+    requireAuth,
+    requireAdmin,
+    serviceController.updateService
+);
 
 /**
  * @swagger
- * /services/{id}:
+ * /services/delete/{id}:
  *   delete:
  *     summary: Delete a service
  *     tags: [Services]
@@ -111,6 +119,8 @@ router.put("/:id", requireAuth, requireAdmin, serviceController.updateService);
  *           type: string
  *         required: true
  *         description: The service id
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Service deleted
@@ -118,7 +128,7 @@ router.put("/:id", requireAuth, requireAdmin, serviceController.updateService);
  *         description: Service not found
  */
 router.delete(
-    "/:id",
+    "/services/delete/:id",
     requireAuth,
     requireAdmin,
     serviceController.deleteService
