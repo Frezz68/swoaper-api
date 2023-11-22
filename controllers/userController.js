@@ -22,6 +22,8 @@ exports.createUser = async (req, res) => {
                 .json({ error: "Cette adresse e-mail existe déjà." });
         }
 
+        req.body.roles = ["ROLE_USER"];
+
         const newUser = new User(req.body);
         const user = await newUser.save();
 
