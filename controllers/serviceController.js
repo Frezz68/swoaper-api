@@ -1,12 +1,16 @@
-const Service = require("./Service"); // Assuming Service model is in the same directory
+const Service = require("../models/service"); // Assuming Service model is in the same directory
 
 // List all services
 exports.listServices = async (req, res) => {
+    console.log("here");
     try {
         const services = await Service.find();
+        console.log("services : ", services);
         res.json(services);
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).json({
+            error: "Erreur lors de la récupération des services",
+        });
     }
 };
 

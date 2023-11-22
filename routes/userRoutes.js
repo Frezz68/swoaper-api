@@ -12,7 +12,7 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 /**
  * @swagger
- * /users:
+ * /register:
  *   post:
  *     summary: Créer un nouvel utilisateur.
  *     tags: [User]
@@ -27,8 +27,25 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
  *       '500':
  *         description: Erreur du serveur.
  */
-router.post("/users", userController.createUser);
+router.post("/register", userController.createUser);
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Connecte l'utilisateur en générant un Bearer token.
+ *     tags: [User]
+ *     description: Connecte l'utilisateur à partir d'un email et d'un mot de passe valide en générant un Bearer token.
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       '201':
+ *         description: Utilisateur créé avec succès.
+ *       '400':
+ *         description: Cette adresse e-mail existe déjà ou des données invalides ont été fournies.
+ *       '500':
+ *         description: Erreur du serveur.
+ */
 router.post("/login", userController.login);
 
 /**
@@ -74,7 +91,7 @@ router.get("/users/:userId", userController.getUserById);
 
 /**
  * @swagger
- * /users/{userId}:
+ * /users/update/{userId}:
  *   put:
  *     summary: Met à jour un utilisateur par son ID.
  *     tags: [User]
@@ -96,11 +113,11 @@ router.get("/users/:userId", userController.getUserById);
  *       '500':
  *         description: Erreur du serveur.
  */
-router.put("/users/:userId", userController.updateUser);
+router.put("/users/update/:userId", userController.updateUser);
 
 /**
  * @swagger
- * /users/{userId}:
+ * /users/delete/{userId}:
  *   delete:
  *     summary: Supprime un utilisateur par son ID.
  *     tags: [User]
@@ -121,7 +138,7 @@ router.put("/users/:userId", userController.updateUser);
  *         description: Erreur du serveur.
  */
 router.delete(
-    "/users/:userId",
+    "/users/delete/:userId",
     requireAuth,
     requireAdmin,
     userController.deleteUser
