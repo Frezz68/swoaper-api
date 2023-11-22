@@ -1,6 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const serviceController = require('./serviceController');
+const serviceController = require("./serviceController");
+const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 /**
  * @swagger
@@ -25,7 +26,7 @@ const serviceController = require('./serviceController');
  *               items:
  *                 $ref: '#/components/schemas/Service'
  */
-router.get('/', serviceController.listServices);
+router.get("/", serviceController.listServices);
 
 /**
  * @swagger
@@ -50,7 +51,7 @@ router.get('/', serviceController.listServices);
  *       404:
  *         description: Service not found
  */
-router.get('/:id', serviceController.getServiceById);
+router.get("/:id", serviceController.getServiceById);
 
 /**
  * @swagger
@@ -68,7 +69,7 @@ router.get('/:id', serviceController.getServiceById);
  *       201:
  *         description: Service created
  */
-router.post('/', serviceController.createService);
+router.post("/", requireAuth, requireAdmin, serviceController.createService);
 
 /**
  * @swagger
@@ -95,7 +96,7 @@ router.post('/', serviceController.createService);
  *       404:
  *         description: Service not found
  */
-router.put('/:id', serviceController.updateService);
+router.put("/:id", requireAuth, requireAdmin, serviceController.updateService);
 
 /**
  * @swagger
@@ -116,6 +117,11 @@ router.put('/:id', serviceController.updateService);
  *       404:
  *         description: Service not found
  */
-router.delete('/:id', serviceController.deleteService);
+router.delete(
+    "/:id",
+    requireAuth,
+    requireAdmin,
+    serviceController.deleteService
+);
 
 module.exports = router;
