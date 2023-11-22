@@ -4,6 +4,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 const db = mongoose.connection;
 
+const cors = require("cors");
+
+app.use(cors());
+
 // Connexion à la base de données
 require("./config/database");
 
@@ -31,28 +35,28 @@ const passport = require("./config/passeport");
 app.use(passport.initialize());
 
 app.listen(port, () => {
-    console.log(`Serveur en cours d'exécution sur le port ${port}`);
+  console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });
 
 db.on("error", (err) => {
-    console.error("Erreur de connexion à la base de données :", err);
+  console.error("Erreur de connexion à la base de données :", err);
 });
 
 db.once("open", () => {
-    console.log("Connecté à la base de données MongoDB");
-    // Vous pouvez commencer à configurer vos modèles et vos routes ici
+  console.log("Connecté à la base de données MongoDB");
+  // Vous pouvez commencer à configurer vos modèles et vos routes ici
 });
 
 db.on("disconnected", () => {
-    console.log("La connexion à la base de données MongoDB a été interrompue");
+  console.log("La connexion à la base de données MongoDB a été interrompue");
 });
 
 // Gestion des erreurs de connexion
 process.on("SIGINT", () => {
-    db.close(() => {
-        console.log(
-            "La connexion à la base de données MongoDB a été interrompue en raison de la fermeture de l'application"
-        );
-        process.exit(0);
-    });
+  db.close(() => {
+    console.log(
+      "La connexion à la base de données MongoDB a été interrompue en raison de la fermeture de l'application"
+    );
+    process.exit(0);
+  });
 });
