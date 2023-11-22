@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController');
-const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
+const userController = require("../controllers/userController");
+const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 /**
  * @swagger
@@ -27,9 +27,9 @@ const { requireAuth, requireAdmin } = require('../middleware/authMiddleware');
  *       '500':
  *         description: Erreur du serveur.
  */
-router.post('/users', userController.createUser);
+router.post("/users", userController.createUser);
 
-router.post('/login', userController.login);
+router.post("/login", userController.login);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.post('/login', userController.login);
  *       '500':
  *         description: Erreur du serveur.
  */
-router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
+router.get("/users", requireAuth, requireAdmin, userController.getAllUsers);
 
 /**
  * @swagger
@@ -70,7 +70,7 @@ router.get('/users', requireAuth, requireAdmin, userController.getAllUsers);
  *       '500':
  *         description: Erreur du serveur.
  */
-router.get('/users/:userId', userController.getUserById);
+router.get("/users/:userId", userController.getUserById);
 
 /**
  * @swagger
@@ -96,7 +96,7 @@ router.get('/users/:userId', userController.getUserById);
  *       '500':
  *         description: Erreur du serveur.
  */
-router.put('/users/:userId', userController.updateUser);
+router.put("/users/:userId", userController.updateUser);
 
 /**
  * @swagger
@@ -120,6 +120,11 @@ router.put('/users/:userId', userController.updateUser);
  *       '500':
  *         description: Erreur du serveur.
  */
-router.delete('/users/:userId', requireAuth, requireAdmin, userController.deleteUser);
+router.delete(
+    "/users/:userId",
+    requireAuth,
+    requireAdmin,
+    userController.deleteUser
+);
 
 module.exports = router;

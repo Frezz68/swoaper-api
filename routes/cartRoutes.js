@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const cartController = require('../controllers/cartController');
-const { requireAuth, requireAdmin } = require('../middleware/authMiddleware'); // Assurez-vous d'avoir le middleware d'authentification
+const cartController = require("../controllers/cartController");
+const { requireAuth, requireAdmin } = require("../middleware/authMiddleware"); // Assurez-vous d'avoir le middleware d'authentification
 
 /**
  * @swagger
@@ -51,9 +51,10 @@ const { requireAuth, requireAdmin } = require('../middleware/authMiddleware'); /
  *                   type: string
  */
 
-router.route('/carts')
-  .get(requireAuth, requireAuth, cartController.getUserCart)
-  .post(requireAuth, requireAuth, requireAdmin, cartController.createCart);
+router
+    .route("/carts")
+    .get(requireAuth, requireAuth, cartController.getUserCart)
+    .post(requireAuth, requireAuth, requireAdmin, cartController.createCart);
 
 /**
  * @swagger
@@ -114,8 +115,9 @@ router.route('/carts')
  *         description: Successfully deleted the user's cart.
  */
 
-router.route('/carts/:cartId')
-  .put(requireAuth, cartController.updateCart)
-  .delete(requireAuth, cartController.deleteCart);
+router
+    .route("/carts/:cartId")
+    .put(requireAuth, cartController.updateCart)
+    .delete(requireAuth, cartController.deleteCart);
 
 module.exports = router;
