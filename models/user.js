@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -37,6 +38,7 @@ const userSchema = new mongoose.Schema({
             message: "Le mot de passe doit comporter au moins 8 caractères.",
         },
     },
+    passwordHash: String,
     isVerified: {
         type: Boolean,
         default: false,
@@ -57,6 +59,13 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cart",
     },
+});
+
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+        this.passwordHash = await bcrypt.hash(this.password, 10);
+    }
+    next();
 });
 
 const User = mongoose.model("User", userSchema);
