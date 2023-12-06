@@ -1,47 +1,40 @@
-// middleware/auth.js
 const jwt = require("jsonwebtoken");
 
-// Middleware d'authentification avec Passport et la stratégie JWT
 const requireAuth = (req, res, next) => {
-    const authHeader = req.header("Authorization");
+  const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
-        return res
-            .status(401)
-            .json({ message: "Accès non autorisé, jeton JWT manquant" });
-    } else {
-        next();
-    }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Accès non autorisé, jeton JWT manquant ou mal formé" });
+  }
+
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Ajoute les données de l'utilisateur à la requête pour un usage ultérieur
+    next();
+  } catch (error) {
+    console.error(error);
+    res
+      .status(401)
+      .json({ message: "Accès non autorisé, jeton JWT non valide" });
+  }
 };
 
 const requireAdmin = (req, res, next) => {
-    const token = req.header("Authorization").split(" ")[1];
+  const userRoles = req.user.roles;
 
-    try {
-        // Vérifiez et décodez le jeton JWT
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-        // Récupérez le rôle de l'utilisateur à partir du jeton
-        const userRoles = decoded.roles;
-
-        // Vérifiez si l'utilisateur a le rôle nécessaire (par exemple, "ROLE_ADMIN")
-        if (userRoles.includes("ROLE_ADMIN")) {
-            // L'utilisateur a le rôle requis
-            next();
-        } else {
-            return res
-                .status(403)
-                .json({ message: "Accès non autorisé, rôle insuffisant" });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(401).json({
-            message: "Accès non autorisé, jeton JWT non valide",
-        });
-    }
+  if (userRoles && userRoles.includes("ROLE_ADMIN")) {
+    next();
+  } else {
+    return res
+      .status(403)
+      .json({ message: "Accès non autorisé, rôle insuffisant" });
+  }
 };
 
 module.exports = {
-    requireAuth,
-    requireAdmin,
+  requireAuth,
+  requireAdmin,
 };
