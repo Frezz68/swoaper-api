@@ -4,7 +4,7 @@ const userServiceDescriptionController = require("../controllers/userServiceDesc
 const { requireAuth, requireAdmin } = require("../middleware/authMiddleware");
 
 
-router.get("/userServiceDescriptions", requireAuth, userServiceDescriptionController.listUserServiceDescriptions);
+router.get("/userServiceDescriptions", requireAdmin, userServiceDescriptionController.listUserServiceDescriptions);
 
 
 router.get("/userServiceDescriptions/:id",requireAdmin, userServiceDescriptionController.getUserServiceDescriptionById);
