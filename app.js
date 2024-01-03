@@ -26,6 +26,11 @@ const serviceRouter = require("./routes/serviceRoutes");
 app.use(express.json());
 app.use("/", serviceRouter);
 
+// UserServiceDescriptions routes
+const userServiceDescriptionRouter = require("./routes/userServiceDescriptionRoutes");
+app.use(express.json());
+app.use("/", userServiceDescriptionRouter);
+
 // Swagger config
 const configureSwagger = require("./swagger/config");
 configureSwagger(app);
