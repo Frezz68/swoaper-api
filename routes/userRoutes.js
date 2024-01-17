@@ -67,6 +67,25 @@ router.get("/users", requireAuth, requireAdmin, userController.getAllUsers);
 
 /**
  * @swagger
+ * /logout:
+ *   post:
+ *     summary: Déconnecte l'utilisateur en invalidant son Bearer token.
+ *     tags: [User]
+ *     description: Déconnecte l'utilisateur en ajoutant son Bearer token à une liste noire.
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Utilisateur déconnecté avec succès.
+ *       '401':
+ *         description: Accès non autorisé, jeton JWT manquant ou mal formé.
+ *       '500':
+ *         description: Erreur du serveur.
+ */
+router.post("/logout", requireAuth, userController.logout);
+
+/**
+ * @swagger
  * /users/{userId}:
  *   get:
  *     summary: Récupère un utilisateur par son ID.
@@ -138,10 +157,10 @@ router.put("/users/update/:userId", userController.updateUser);
  *         description: Erreur du serveur.
  */
 router.delete(
-    "/users/delete/:userId",
-    requireAuth,
-    requireAdmin,
-    userController.deleteUser
+  "/users/delete/:userId",
+  requireAuth,
+  requireAdmin,
+  userController.deleteUser
 );
 
 module.exports = router;

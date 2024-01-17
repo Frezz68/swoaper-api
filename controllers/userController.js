@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erreur lors de la connexion" });
@@ -139,4 +139,23 @@ exports.deleteUser = async (req, res) => {
       error: "Erreur lors de la suppression de l'utilisateur",
     });
   }
+};
+
+exports.logout = (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({
+        message: "Déconnexion échouée, jeton JWT manquant ou mal formé",
+      });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  // Ajoutez le jeton à la liste noire
+  tokenBlacklist.push(token);
+
+  res.status(200).json({ message: "Déconnexion réussie" });
 };

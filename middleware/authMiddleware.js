@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 
+let tokenBlacklist = []; // Liste noire de jetons
+
 const requireAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -10,6 +12,12 @@ const requireAuth = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
+
+  // Vérifiez si le jeton est dans la liste noire
+  if (tokenBlacklist.includes(token)) {
+    return res.status(401).json({ message: "Jeton invalide ou expiré" });
+  }
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // Ajoute les données de l'utilisateur à la requête pour un usage ultérieur
@@ -19,18 +27,6 @@ const requireAuth = (req, res, next) => {
     res
       .status(401)
       .json({ message: "Accès non autorisé, jeton JWT non valide" });
-  }
-};
-
-const requireAdmin = (req, res, next) => {
-  const userRoles = req.user.roles;
-
-  if (userRoles && userRoles.includes("ROLE_ADMIN")) {
-    next();
-  } else {
-    return res
-      .status(403)
-      .json({ message: "Accès non autorisé, rôle insuffisant" });
   }
 };
 
