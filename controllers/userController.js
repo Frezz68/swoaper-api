@@ -51,6 +51,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
+// Methode de connexion
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -61,7 +62,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Identifiants incorrects" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Identifiants incorrects" });
@@ -79,6 +80,7 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la connexion" });
   }
 };
+
 // Obtenir tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
   try {

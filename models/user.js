@@ -27,17 +27,6 @@ const userSchema = new mongoose.Schema({
   postalCode: String,
   country: String,
   state: String,
-  password: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (password) {
-        // Vérification de la longueur minimale du mot de passe
-        return password.length >= 8;
-      },
-      message: "Le mot de passe doit comporter au moins 8 caractères.",
-    },
-  },
   passwordHash: String,
   isVerified: {
     type: Boolean,
