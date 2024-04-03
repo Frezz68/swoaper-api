@@ -9,7 +9,41 @@ const { requireAuth, requireAdmin } = require("../middleware/authMiddleware"); /
  *   name: Cart
  *   description: Opérations relatives au panier d'un utilisateur.
  */
-
+/**
+ * @swagger
+ * /carts/addService:
+ *   post:
+ *     summary: Add a service to the user's cart
+ *     tags: [Cart]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               serviceId:
+ *                 type: string
+ *                 description: The ID of the service to add to the cart
+ *     responses:
+ *       200:
+ *         description: Service added to cart successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Cart'
+ *       400:
+ *         description: Service already in cart or other client error
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Cart not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/carts/addService", requireAuth, cartController.addServiceToCart);
 /**
  * @swagger
  * /carts/user-cart:
@@ -78,8 +112,8 @@ router.post("/carts/create", requireAuth, cartController.getUserCart);
  */
 
 router
-    .route("/carts/delete/:cartId")
-    .put(requireAuth, cartController.updateCart)
-    .delete(requireAuth, cartController.deleteCart);
+  .route("/carts/delete/:cartId")
+  .put(requireAuth, cartController.updateCart)
+  .delete(requireAuth, cartController.deleteCart);
 
 module.exports = router;
