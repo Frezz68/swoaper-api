@@ -26,6 +26,11 @@ const serviceRouter = require("./routes/serviceRoutes");
 app.use(express.json());
 app.use("/", serviceRouter);
 
+// Mail routes
+const mailRouter = require("./routes/mailRoutes");
+app.use(express.json());
+app.use("/", mailRouter);
+
 // UserServiceDescriptions routes
 const userServiceDescriptionRouter = require("./routes/userServiceDescriptionRoutes");
 app.use(express.json());
