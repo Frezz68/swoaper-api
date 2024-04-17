@@ -16,7 +16,7 @@ exports.contactSendMail = async (req, res) => {
         }
         const { data, error } = await resend.emails.send({
             from: 'no_reply@contact.swoaper.com',
-            to: [process.env.TEST,email],
+            to: [process.env.EMAIL_NOLAN,email],
             subject: objet,
             html:'<span>Voici un recap de ce qui est envoyé :</span><br><p>'+message+'</p><br>',
             attachments: pieceJointe.map(file => {
